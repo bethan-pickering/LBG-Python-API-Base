@@ -25,11 +25,11 @@ pipeline {
                 script {
 			        if (env.GIT_BRANCH == 'origin/main') {
                         sh '''
-                        docker build -t stratcastor/project-flask-api -t stratcastor/project-flask-api:prod-v${BUILD_NUMBER} . 
+                        docker build -t gcr.io/lbg-mea-16/piers-project-flask-api -t gcr.io/lbg-mea-16/piers-project-flask-api:prod-v${BUILD_NUMBER} . 
                         '''
                     } else if (env.GIT_BRANCH == 'origin/dev') {
                         sh '''
-                        docker build -t stratcastor/project-flask-api -t stratcastor/project-flask-api:dev-v${BUILD_NUMBER} .         
+                        docker build -t gcr.io/lbg-mea-16/piers-project-flask-api -t gcr.io/lbg-mea-16/piers-project-flask-api:dev-v${BUILD_NUMBER} .         
                         '''
                     } else {
                         sh '''
@@ -44,13 +44,13 @@ pipeline {
                 script {
 			        if (env.GIT_BRANCH == 'origin/main') {
                         sh '''
-                        docker push stratcastor/project-flask-api
-                        docker push stratcastor/project-flask-api:prod-v${BUILD_NUMBER}
+                        docker push gcr.io/lbg-mea-16/piers-project-flask-api
+                        docker push gcr.io/lbg-mea-16/piers-project-flask-api:prod-v${BUILD_NUMBER}
                         '''
                     } else if (env.GIT_BRANCH == 'origin/dev') {
                         sh '''
-                        docker push stratcastor/project-flask-api
-                        docker push stratcastor/project-flask-api:dev-v${BUILD_NUMBER}
+                        docker push gcr.io/lbg-mea-16/piers-project-flask-api
+                        docker push gcr.io/lbg-mea-16/piers-project-flask-api:dev-v${BUILD_NUMBER}
                         '''
                     } else {
                         sh '''
@@ -66,12 +66,12 @@ pipeline {
 			        if (env.GIT_BRANCH == 'origin/main') {
                         sh '''
                         kubectl apply -n prod -f ./kubernetes
-                        kubectl set image deployment/flask-api-deployment flask-container=stratcastor/project-flask-api:prod-v${BUILD_NUMBER} -n prod
+                        kubectl set image deployment/flask-api-deployment flask-container=gcr.io/lbg-mea-16/piers-project-flask-api:prod-v${BUILD_NUMBER} -n prod
                         '''
                     } else if (env.GIT_BRANCH == 'origin/dev') {
                         sh '''
                         kubectl apply -n dev -f ./kubernetes
-                        kubectl set image deployment/flask-api-deployment flask-container=stratcastor/project-flask-api:dev-v${BUILD_NUMBER} -n dev
+                        kubectl set image deployment/flask-api-deployment flask-container=gcr.io/lbg-mea-16/piers-project-flask-api:dev-v${BUILD_NUMBER} -n dev
                         '''
                     } else {
                         sh '''
@@ -86,16 +86,16 @@ pipeline {
                 script {
                     if (env.GIT_BRANCH == 'origin/main') {
                         sh '''
-                        docker rmi stratcastor/project-flask-api:prod-v${BUILD_NUMBER}
+                        docker rmi gcr.io/lbg-mea-16/piers-project-flask-api:prod-v${BUILD_NUMBER}
                         '''
                     } else if (env.GIT_BRANCH == 'origin/dev') {
                         sh '''
-                        docker rmi stratcastor/project-flask-api:dev-v${BUILD_NUMBER}
+                        docker rmi gcr.io/lbg-mea-16/piers-project-flask-api:dev-v${BUILD_NUMBER}
                         '''
                     }
                 }
                 sh '''
-                docker rmi stratcastor/project-flask-api:latest
+                docker rmi gcr.io/lbg-mea-16/piers-project-flask-api:latest
                 docker system prune -f 
                 '''
            }
