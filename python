@@ -1,0 +1,7 @@
+      PID    PPID    PGID     WINPID   TTY         UID    STIME COMMAND
+      786       1     786      23444  ?         197609 09:47:36 /usr/bin/mintty
+      787     786     787      24084  pty0      197609 09:47:36 /usr/bin/bash
+      989       1     989      25316  cons0     197609 10:16:17 /usr/bin/bash
+     1039    1017    1039      23324  cons1     197609 10:30:01 /usr/bin/PS
+     1016     989    1016      22780  cons0     197609 10:18:31 /c/Users/User/AppData/Local/Programs/Python/Python311/python
+     1017       1    1017      25972  cons1     197609 10:29:04 /usr/bin/bash
