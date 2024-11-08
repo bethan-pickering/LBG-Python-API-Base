@@ -122,9 +122,7 @@ def read_all():
 
 @app.route('/read/<int:_id>', methods=['GET'])
 def read_one(_id):
-    """
-    READ ONE (Get)
-    """
+    
     # log that we are running the read operation
     print('\nRead - GET\n')
 
