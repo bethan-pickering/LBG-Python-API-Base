@@ -12,28 +12,58 @@ const writeItem = item => {
 }
 
 // GET all function
-const get = () => {
-  DOM.listOutput.innerHTML = ``;
+// const get = () => {
+//   DOM.listOutput.innerHTML = ``;
 
-  axios.get(`/read`)
-    .then((response) => {
-      if (!Array.isArray(response.data)) {
-        writeItem(response.data);
-      } else {
-        for (let item of response.data) {
-          writeItem(item);
-        }
-      }
-    }).catch((err) => {
-      console.log(err);
-    });
-}
+//   axios.get(`/read`)
+//     .then((response) => {
+//       if (!Array.isArray(response.data)) {
+//         writeItem(response.data);
+//       } else {
+//         for (let item of response.data) {
+//           writeItem(item);
+//         }
+//       }
+//     }).catch((err) => {
+//       console.log(err);
+//     });
+//}
+
+//table 
+const createTable = (data) => {
+  let table = `<table border="0"><tr>`;
+  // Add table headers if the data is an array of objects 
+  if (Array.isArray(data) && data.length > 0 && typeof data[0] === 'object') {
+    table += Object.keys(data[0]).map(key => `<th>${key}</th>`).join('');
+    table += `</tr>`;
+    // Add data rows 
+    table += data.map(item => {
+      return `<tr>` + Object.values(item).map(value => `<td>${value}</td>`).join('') + `</tr>`;
+    }).join('');
+  } else {
+    // Handle case where data is a single object or primitive type 
+    table += `<th>Value</th></tr><tr><td>${data}</td></tr>`;
+  }
+  table += `</table>`;
+  return table;
+};
+
+DOM.listOutput.innerHTML = ``;
+axios.get(`/read`)
+  .then((response) => {
+    const tableHTML = createTable(response.data);
+    DOM.listOutput.innerHTML = tableHTML;
+  }).catch((err) => {
+    console.log(err);
+  });
 
 // POST function
 const post = () => {
-  axios.post(`/create`, {   name : DOM.inputName.value,
-                            description : DOM.inputDescription.value, 
-                            price : DOM.inputPrice.value})
+  axios.post(`/create`, {
+    name: DOM.inputName.value,
+    description: DOM.inputDescription.value,
+    price: DOM.inputPrice.value
+  })
     .then((response) => {
       console.log(response);
       get();
@@ -53,24 +83,26 @@ const getOne = () => {
 }
 
 // PUT function
-const put = () => { 
-  axios.put(`/update/${DOM.inputUpdateID.value}`, { name : DOM.inputUpdateName.value,
-                                                    description : DOM.inputUpdateDescription.value,
-                                                    price : DOM.inputUpdatePrice.value})
+const put = () => {
+  axios.put(`/update/${DOM.inputUpdateID.value}`, {
+    name: DOM.inputUpdateName.value,
+    description: DOM.inputUpdateDescription.value,
+    price: DOM.inputUpdatePrice.value
+  })
     .then((response) => {
-     console.log(response);
-     get();
+      console.log(response);
+      get();
     }).catch((err) => {
       console.log(err);
     });
 }
 
 // DELETE function
-const del = () => { 
+const del = () => {
   axios.delete(`/delete/${DOM.inputDeleteID.value}`)
     .then((response) => {
-     console.log(response);
-     get();
+      console.log(response);
+      get();
     }).catch((err) => {
       console.log(err);
     });
