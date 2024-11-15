@@ -8,7 +8,7 @@ cleanup() {
     sleep 3
     # Add commands to clean up previous build artifacts
     docker rm -f $(docker ps -aq) || true
-    docker rmi -f $(docker images) || true
+    docker rmi -f $(docker images -q) || true
     echo "Cleanup done."
 }
 # Function to build the Docker image
