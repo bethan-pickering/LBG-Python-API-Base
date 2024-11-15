@@ -11,77 +11,76 @@ const writeItem = item => {
   DOM.listOutput.appendChild(child);
 }
 
-// list item function - table version
+//list item function - table version
 // const writeItem = item => {
 //   const tableBody = document.getElementById('listOutput');
 //   const row = document.createElement('tr');
 
-//   const cell1 = document.createElement('td');
+//   const id = document.createElement('td');
 //   cell1.textContent = item.property1;
-//   row.appendChild(cell1);
+//   row.appendChild(id);
 
-//   const cell2 = document.createElement('td');
+//   const name = document.createElement('td');
 //   cell2.textContent = item.property2;
-//   row.appendChild(cell2);
+//   row.appendChild(name);
 
-//   const cell3 = document.createElement('td');
+//   const description = document.createElement('td');
 //   cell2.textContent = item.property2;
-//   row.appendChild(cell3);
+//   row.appendChild(description);
 
-//   const cell4 = document.createElement('td');
+//   const price = document.createElement('td');
 //   cell2.textContent = item.property2;
-//   row.appendChild(cell4);
+//   row.appendChild(price);
 
 //   tableBody.appendChild(row);
 // }
 
-//GET all function
-const get = () => {
-  DOM.listOutput.innerHTML = ``;
+// //GET all function
+// const get = () => {
+//   DOM.listOutput.innerHTML = ``;
 
-  axios.get(`/read`)
-    .then((response) => {
-      if (!Array.isArray(response.data)) {
-        writeItem(response.data);
-      } else {
-        for (let item of response.data) {
-          writeItem(item);
-        }
-      }
-    }).catch((err) => {
-      console.log(err);
-    });
-}
+//   axios.get(`/read`)
+//     .then((response) => {
+//       if (!Array.isArray(response.data)) {
+//         writeItem(response.data);
+//       } else {
+//         for (let item of response.data) {
+//           writeItem(item);
+//         }
+//       }
+//     }).catch((err) => {
+//       console.log(err);
+//     });
+// }
 
 
+//GET all function unformatted table version  
+const createTable = (data) => {
+  let table = `<table border="0"><tr>`;
+  // Add table headers if the data is an array of objects 
+  if (Array.isArray(data) && data.length > 0 && typeof data[0] === 'object') {
+    // table += Object.keys(data[0]).map(key => `<th>${key}</th>`).join('');
+    // table += `</tr>`;
+    // Add data rows 
+    table += data.map(item => {
+      return `<tr>` + Object.values(item).map(value => `<td>${value}</td>`).join('') + `</tr>`;
+    }).join('');
+  } else {
+    // Handle case where data is a single object or primitive type 
+    table += `<th>Value</th></tr><tr><td>${data}</td></tr>`;
+  }
+  table += `</table>`;
+  return table;
+};
 
-//GET all function table version  
-// const createTable = (data) => {
-//   let table = `<table border="0"><tr>`;
-//   // Add table headers if the data is an array of objects 
-//   if (Array.isArray(data) && data.length > 0 && typeof data[0] === 'object') {
-//     table += Object.keys(data[0]).map(key => `<th>${key}</th>`).join('');
-//     table += `</tr>`;
-//     // Add data rows 
-//     table += data.map(item => {
-//       return `<tr>` + Object.values(item).map(value => `<td>${value}</td>`).join('') + `</tr>`;
-//     }).join('');
-//   } else {
-//     // Handle case where data is a single object or primitive type 
-//     table += `<th>Value</th></tr><tr><td>${data}</td></tr>`;
-//   }
-//   table += `</table>`;
-//   return table;
-// };
-
-// DOM.listOutput.innerHTML = ``;
-// axios.get(`/read`)
-//   .then((response) => {
-//     const tableHTML = createTable(response.data);
-//     DOM.listOutput.innerHTML = tableHTML;
-//   }).catch((err) => {
-//     console.log(err);
-//   });
+DOM.listOutput.innerHTML = ``;
+axios.get(`/read`)
+  .then((response) => {
+    const tableHTML = createTable(response.data);
+    DOM.listOutput.innerHTML = tableHTML;
+  }).catch((err) => {
+    console.log(err);
+  });
 
 // POST function
 const post = () => {
